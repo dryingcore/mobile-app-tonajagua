@@ -1,42 +1,8 @@
-import {
-  Box,
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Avatar,
-} from "@mui/material";
-import { Google as GoogleIcon } from "@mui/icons-material";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-interface LoginFormInputs {
-  email: string;
-  senha: string;
-}
-
-const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("E-mail inválido")
-    .required("O e-mail é obrigatório"),
-  senha: yup
-    .string()
-    .min(6, "A senha deve ter pelo menos 6 caracteres")
-    .required("A senha é obrigatória"),
-});
+import { Box, Container, Typography, Avatar } from "@mui/material";
+import LoginComponent from "../components/LoginComponent";
 
 export default function LoginPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormInputs>({
-    resolver: yupResolver(loginSchema),
-  });
-
-  const onSubmit = (data: LoginFormInputs) => {
+  const handleLogin = (data: { email: string; senha: string }) => {
     console.log("Login realizado:", data);
   };
 
@@ -49,80 +15,15 @@ export default function LoginPage() {
         justifyContent="center"
         sx={{ paddingTop: 4, paddingBottom: 4 }}
       >
-        {/* Logo */}
         <Avatar
           alt="Logo"
           src="/logo.png"
           sx={{ width: 100, height: 100, marginBottom: 2 }}
         />
-
-        {/* Título */}
         <Typography variant="h5" component="h1" gutterBottom>
           Faça seu login
         </Typography>
-
-        {/* Formulário de Login */}
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
-          {/* Campo de Email */}
-          <TextField
-            label="E-mail"
-            variant="outlined"
-            fullWidth
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            required
-          />
-
-          {/* Campo de Senha */}
-          <TextField
-            label="Senha"
-            type="password"
-            variant="outlined"
-            fullWidth
-            {...register("senha")}
-            error={!!errors.senha}
-            helperText={errors.senha?.message}
-            required
-          />
-
-          {/* Botão de Login */}
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Entrar
-          </Button>
-
-          {/* Separador entre login tradicional e Google */}
-          <Box sx={{ display: "flex", alignItems: "center", marginY: 2 }}>
-            <Box
-              sx={{ flexGrow: 1, height: 1, borderBottom: "1px solid #ccc" }}
-            />
-            <Typography variant="body2" sx={{ marginX: 1 }}>
-              ou
-            </Typography>
-            <Box
-              sx={{ flexGrow: 1, height: 1, borderBottom: "1px solid #ccc" }}
-            />
-          </Box>
-
-          {/* Botão do Google */}
-          <Button
-            variant="outlined"
-            color="secondary"
-            fullWidth
-            startIcon={<GoogleIcon />}
-          >
-            Entrar com Google
-          </Button>
-        </Box>
+        <LoginComponent onSubmit={handleLogin} />
       </Box>
     </Container>
   );
