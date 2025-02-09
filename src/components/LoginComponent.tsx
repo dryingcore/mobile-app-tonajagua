@@ -3,6 +3,7 @@ import { Google as GoogleIcon } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Link } from "react-router-dom"; // Importe o Link
 
 interface LoginFormInputs {
   email: string;
@@ -78,6 +79,19 @@ export default function LoginComponent({ onSubmit }: LoginComponentProps) {
       >
         Entrar com Google
       </Button>
+
+      {/* Adicionando a opção de registrar */}
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
+        <Typography variant="body2">
+          Não tem uma conta?{" "}
+          <Link
+            to="/register"
+            style={{ textDecoration: "none", color: "#1976d2" }}
+          >
+            Registre-se
+          </Link>
+        </Typography>
+      </Box>
     </Box>
   );
 }
