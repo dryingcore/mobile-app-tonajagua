@@ -7,8 +7,39 @@ import {
   Avatar,
 } from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-export default function LoginComponent() {
+interface LoginFormInputs {
+  email: string;
+  senha: string;
+}
+
+const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("E-mail inválido")
+    .required("O e-mail é obrigatório"),
+  senha: yup
+    .string()
+    .min(6, "A senha deve ter pelo menos 6 caracteres")
+    .required("A senha é obrigatória"),
+});
+
+export default function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
+    resolver: yupResolver(loginSchema),
+  });
+
+  const onSubmit = (data: LoginFormInputs) => {
+    console.log("Login realizado:", data);
+  };
+
   return (
     <Container maxWidth="xs">
       <Box
@@ -16,10 +47,7 @@ export default function LoginComponent() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        sx={{
-          paddingTop: 4,
-          paddingBottom: 4,
-        }}
+        sx={{ paddingTop: 4, paddingBottom: 4 }}
       >
         {/* Logo */}
         <Avatar
@@ -36,6 +64,7 @@ export default function LoginComponent() {
         {/* Formulário de Login */}
         <Box
           component="form"
+          onSubmit={handleSubmit(onSubmit)}
           sx={{
             width: "100%",
             display: "flex",
@@ -44,7 +73,15 @@ export default function LoginComponent() {
           }}
         >
           {/* Campo de Email */}
-          <TextField label="E-mail" variant="outlined" fullWidth required />
+          <TextField
+            label="E-mail"
+            variant="outlined"
+            fullWidth
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            required
+          />
 
           {/* Campo de Senha */}
           <TextField
@@ -52,11 +89,14 @@ export default function LoginComponent() {
             type="password"
             variant="outlined"
             fullWidth
+            {...register("senha")}
+            error={!!errors.senha}
+            helperText={errors.senha?.message}
             required
           />
 
           {/* Botão de Login */}
-          <Button variant="contained" color="primary" fullWidth>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
             Entrar
           </Button>
 
