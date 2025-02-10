@@ -31,4 +31,12 @@ export const estabelecimentoSchema = yup.object().shape({
     .string()
     .length(11, "CPF deve ter 11 dígitos")
     .required("CPF do dono é obrigatório"),
+  senhaAcesso: yup
+    .string()
+    .length(6, "Senha de acesso deve ter 6 dígitos")
+    .required("Senha de acesso é obrigatória"),
+  confirmarSenhaAcesso: yup
+    .string()
+    .oneOf([yup.ref("senhaAcesso")], "As senhas devem coincidir")
+    .required("Confirmação de senha de acesso é obrigatória"),
 });

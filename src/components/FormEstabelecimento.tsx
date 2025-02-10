@@ -10,6 +10,8 @@ interface EstabelecimentoFormData {
   endereco: string;
   nomeDono: string;
   cpfDono: string;
+  senhaAcesso: string;
+  confirmarSenhaAcesso: string;
 }
 
 interface FormEstabelecimentoProps {
@@ -76,6 +78,22 @@ export default function FormEstabelecimento({
         margin="normal"
         error={!!errors.cpfDono}
         helperText={errors.cpfDono?.message}
+      />
+      <TextField
+        label="Senha de acesso"
+        {...register("senhaAcesso")}
+        fullWidth
+        margin="normal"
+        error={!!errors.senhaAcesso}
+        helperText={errors.senhaAcesso?.message}
+      />
+      <TextField
+        label="Confirmar senha de acesso"
+        {...register("confirmarSenhaAcesso")}
+        fullWidth
+        margin="normal"
+        error={!!errors.confirmarSenhaAcesso}
+        helperText={errors.confirmarSenhaAcesso?.message}
       />
       <Button
         type="submit"
