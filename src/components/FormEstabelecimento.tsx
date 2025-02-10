@@ -1,4 +1,5 @@
-import { TextField, Button } from "@mui/material";
+import { useState } from "react";
+import { TextField, Button, Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { estabelecimentoSchema } from "../utils/validationSchema";
@@ -18,9 +19,8 @@ interface FormEstabelecimentoProps {
   onSubmit: (data: EstabelecimentoFormData) => void;
 }
 
-export default function FormEstabelecimento({
-  onSubmit,
-}: FormEstabelecimentoProps) {
+export function EstabelecimentoForm({ onSubmit }: FormEstabelecimentoProps) {
+  const [step, setStep] = useState(1);
   const {
     register,
     handleSubmit,
@@ -29,8 +29,41 @@ export default function FormEstabelecimento({
     resolver: yupResolver(estabelecimentoSchema),
   });
 
+  const nextStep = () => setStep(2);
+  const prevStep = () => setStep(1);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {step === 1 && (
+        <EstabelecimentoStep
+          register={register}
+          errors={errors}
+          onNext={nextStep}
+        />
+      )}
+
+      {step === 2 && (
+        <ProprietarioStep
+          register={register}
+          errors={errors}
+          onBack={prevStep}
+        />
+      )}
+    </form>
+  );
+}
+
+interface StepProps {
+  register: any;
+  errors: any;
+  onNext?: () => void;
+  onBack?: () => void;
+}
+
+function EstabelecimentoStep({ register, errors, onNext }: StepProps) {
+  return (
+    <Box>
+      <Typography variant="h6">Informações do Estabelecimento</Typography>
       <TextField
         label="Nome do Estabelecimento"
         {...register("nomeEstabelecimento")}
@@ -63,6 +96,24 @@ export default function FormEstabelecimento({
         error={!!errors.endereco}
         helperText={errors.endereco?.message}
       />
+
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+        onClick={onNext}
+      >
+        Próximo
+      </Button>
+    </Box>
+  );
+}
+
+function ProprietarioStep({ register, errors, onBack }: StepProps) {
+  return (
+    <Box>
+      <Typography variant="h6">Informações do Proprietário</Typography>
       <TextField
         label="Nome do Dono"
         {...register("nomeDono")}
@@ -81,6 +132,7 @@ export default function FormEstabelecimento({
       />
       <TextField
         label="Senha de acesso"
+        type="password"
         {...register("senhaAcesso")}
         fullWidth
         margin="normal"
@@ -89,21 +141,22 @@ export default function FormEstabelecimento({
       />
       <TextField
         label="Confirmar senha de acesso"
+        type="password"
         {...register("confirmarSenhaAcesso")}
         fullWidth
         margin="normal"
         error={!!errors.confirmarSenhaAcesso}
         helperText={errors.confirmarSenhaAcesso?.message}
       />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
-      >
-        Cadastrar
-      </Button>
-    </form>
+
+      <Box display="flex" gap={2} mt={2}>
+        <Button variant="outlined" color="primary" fullWidth onClick={onBack}>
+          Voltar
+        </Button>
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Cadastrar
+        </Button>
+      </Box>
+    </Box>
   );
 }

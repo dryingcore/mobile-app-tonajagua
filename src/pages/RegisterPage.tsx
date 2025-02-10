@@ -7,7 +7,7 @@ import {
   Paper,
 } from "@mui/material";
 import FormPessoaFisica from "../components/FormPessoaFisica";
-import FormEstabelecimento from "../components/FormEstabelecimento";
+import { EstabelecimentoForm } from "../components/FormEstabelecimento";
 
 type CadastroTipo = "Pessoa Física" | "Estabelecimento";
 
@@ -40,7 +40,7 @@ export default function RegisterPage() {
         {type === "Pessoa Física" ? (
           <FormPessoaFisica onSubmit={handleSubmit} />
         ) : (
-          <FormEstabelecimento onSubmit={handleSubmit} />
+          <EstabelecimentoForm onSubmit={handleSubmit} />
         )}
       </Paper>
     </Container>
