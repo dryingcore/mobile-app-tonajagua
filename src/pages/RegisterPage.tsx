@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   MenuItem,
@@ -8,14 +8,17 @@ import {
 } from "@mui/material";
 import FormPessoaFisica from "../components/FormPessoaFisica";
 import { EstabelecimentoForm } from "../components/FormEstabelecimento";
+import { useNavigate } from "react-router-dom";
 
 type CadastroTipo = "Pessoa Física" | "Estabelecimento";
 
 export default function RegisterPage() {
   const [type, setType] = useState<CadastroTipo>("Pessoa Física");
+  const navigate = useNavigate();
 
   const handleSubmit = (data: any) => {
     console.log("Dados enviados:", data);
+    navigate("/home"); // it must have auth before (just4development)
   };
 
   return (

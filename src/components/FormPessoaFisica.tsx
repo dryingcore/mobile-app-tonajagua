@@ -60,7 +60,13 @@ export default function FormPessoaFisica({ onSubmit }: FormPessoaFisicaProps) {
         error={!!errors.confirmarSenha}
         helperText={errors.confirmarSenha?.message}
       />
-      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+      >
         Cadastrar
       </Button>
     </form>
