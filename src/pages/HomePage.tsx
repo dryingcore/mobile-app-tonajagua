@@ -1,5 +1,5 @@
-import Header from "../components/Header";
+import ItemList from "../components/ItemList";
 
 export default function HomePage() {
-  return <Header />;
+  return <ItemList />;
 }

@@ -40,7 +40,15 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "white", boxShadow: 3 }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        width: "100%",
+        mb: 3,
+        backgroundColor: "white",
+        boxShadow: 3,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img src="/logo.png" alt="Logo" width="50" height="50" />
