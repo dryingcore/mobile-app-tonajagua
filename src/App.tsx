@@ -3,6 +3,7 @@ import { Container } from "@mui/material";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -22,6 +23,16 @@ function App() {
           <Route path="/home" element={<HomePage />} />
         </Routes>
       </Container>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
+        <Footer />
+      </div>
     </Router>
   );
 }

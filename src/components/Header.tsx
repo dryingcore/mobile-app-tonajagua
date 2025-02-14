@@ -41,9 +41,8 @@ export default function Header() {
 
   return (
     <AppBar
-      position="sticky"
       sx={{
-        width: "100%",
+        position: "fixed",
         mb: 3,
         backgroundColor: "white",
         boxShadow: 3,
@@ -65,7 +64,6 @@ export default function Header() {
             <Menu
               anchorEl={anchorElNav}
               anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              keepMounted
               transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
@@ -105,6 +103,7 @@ export default function Header() {
               transformOrigin={{ vertical: "top", horizontal: "right" }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              sx={{ backgroundColor: "#1916" }}
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>

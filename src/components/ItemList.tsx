@@ -7,7 +7,6 @@ import {
   Box,
   Container,
 } from "@mui/material";
-import Header from "./Header";
 
 interface Item {
   id: number;
@@ -60,18 +59,15 @@ const ItemList = () => {
     );
 
   return (
-    <Box display="flex" flexDirection="column" height="100vh" width="100%">
-      {/* Header fixo */}
-      <Header />
-
+    <Box display="flex" flexDirection="column" height="60vh" width="100%">
       {/* Lista com scroll interno */}
       <Container sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2 }}>
         {items.map((item) => (
           <Card
             key={item.id}
             sx={{
-              mb: 2,
-              p: 1.5,
+              mb: 1,
+              p: 1,
               borderRadius: "12px",
               boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
               transition: "transform 0.2s ease-in-out",
