@@ -14,7 +14,7 @@ function App() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "90vh",
+          height: "100vh",
         }}
       >
         <Routes>

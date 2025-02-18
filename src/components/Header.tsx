@@ -1,121 +1,54 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-
-const pages = ["Estabelecimentos", "Preços", "Abertos", "Fechados"];
-const settings = ["Perfil", "Conta", "Dashboard", "Sair"];
+import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 
 export default function Header() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
     <AppBar
+      position="fixed"
       sx={{
-        position: "fixed",
-        mb: 3,
-        backgroundColor: "white",
-        boxShadow: 3,
+        background: "#fff",
+        color: "#000",
+        borderRadius: 0, // Remove as bordas arredondadas para ocupar 100%
+        p: 1,
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1100,
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <img src="/logo.png" alt="Logo" width="50" height="50" />
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="menu"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon sx={{ color: "#1976d2" }} />
-            </IconButton>
-            <Menu
-              anchorEl={anchorElNav}
-              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              transformOrigin={{ vertical: "top", horizontal: "left" }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" sx={{ color: "#1976d2" }}>
-                    {page}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {/* Logo e texto à esquerda */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <img
+            src="/logo.png" // Substitua pelo caminho correto do logo
+            alt="Logo"
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              marginRight: 8,
+            }}
+          />
+          <Box>
+            <Typography variant="body2" fontWeight="bold">
+              #NÓS❤️CAMACHO
+            </Typography>
+            <Typography variant="caption" color="gray">
+              Associação Amigos <br /> Balneário Camacho
+            </Typography>
           </Box>
+        </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ color: "#1976d2" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Abrir configurações">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Usuário" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              anchorEl={anchorElUser}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              keepMounted
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-              sx={{ backgroundColor: "#1916" }}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" sx={{ color: "#1976d2" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
+        {/* Hashtag à direita */}
+        <Typography variant="body2" fontWeight="bold">
+          #TÔNAJAGUA❤️
+        </Typography>
+      </Toolbar>
     </AppBar>
   );
 }

@@ -1,12 +1,13 @@
-import { Container } from "@mui/material";
 import Header from "../components/Header";
 import ItemList from "../components/ItemList";
+import CategoryList from "../components/CategoryList";
 
 export default function HomePage() {
   return (
-    <Container>
+    <>
       <Header />
+      <CategoryList />
       <ItemList />
-    </Container>
+    </>
   );
 }

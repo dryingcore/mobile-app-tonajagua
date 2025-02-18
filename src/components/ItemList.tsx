@@ -27,7 +27,7 @@ const ItemList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://s01.decodesoftware.tech/estabelecimentos"
+          "https://s01.decodesoftware.tech:4321/estabelecimentos"
         );
         if (!response.ok) throw new Error("Failed to fetch data");
 
@@ -68,7 +68,9 @@ const ItemList = () => {
             sx={{
               mb: 1,
               p: 1,
+              height: "95px",
               borderRadius: "12px",
+              border: "1px solid #ccc",
               boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
               transition: "transform 0.2s ease-in-out",
               "&:hover": { transform: "scale(1.02)" },
