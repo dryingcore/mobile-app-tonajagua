@@ -4,7 +4,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 interface Category {
   id: number;
   nome: string;
-  icone: string; // URL do ícone da categoria
+  icone: string;
 }
 
 const CategoryList: React.FC = () => {

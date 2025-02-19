@@ -15,8 +15,12 @@ export default function CustomModal({
       open={open}
       onClose={onClose}
       closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500,
+        },
+      }}
     >
       <Fade in={open}>
         <Box
@@ -25,10 +29,10 @@ export default function CustomModal({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: { xs: "90%", sm: 400 },
             bgcolor: "background.paper",
             boxShadow: 24,
-            p: 4,
+            p: { xs: 2, sm: 4 },
             borderRadius: "12px",
           }}
         >
@@ -38,6 +42,7 @@ export default function CustomModal({
             sx={{ mt: 2 }}
             variant="contained"
             color="primary"
+            fullWidth
           >
             Fechar
           </Button>

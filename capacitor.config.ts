@@ -1,9 +1,9 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'tech.decodesoftware.app',
-  appName: 'pwa-react',
-  webDir: 'dist'
+  appId: "tech.decodesoftware.app",
+  appName: "Nós❤️Camacho ",
+  webDir: "dist",
 };
 
 export default config;
