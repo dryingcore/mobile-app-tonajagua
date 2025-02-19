@@ -7,6 +7,7 @@ import {
   Box,
   Container,
 } from "@mui/material";
+import CustomModal from "./Modal";
 
 interface Item {
   id: number;
@@ -22,6 +23,8 @@ const ItemList = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +47,16 @@ const ItemList = () => {
     fetchData();
   }, []);
 
+  const handleOpen = (item: Item) => {
+    setSelectedItem(item);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedItem(null);
+  };
+
   if (loading)
     return (
       <Box display="flex" justifyContent="center" mt={10}>
@@ -60,7 +73,6 @@ const ItemList = () => {
 
   return (
     <Box display="flex" flexDirection="column" height="60vh" width="100%">
-      {/* Lista com scroll interno */}
       <Container sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2 }}>
         {items.map((item) => (
           <Card
@@ -73,8 +85,9 @@ const ItemList = () => {
               border: "1px solid #ccc",
               boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
               transition: "transform 0.2s ease-in-out",
-              "&:hover": { transform: "scale(1.02)" },
+              "&:hover": { transform: "scale(1.02)", cursor: "pointer" },
             }}
+            onClick={() => handleOpen(item)}
           >
             <CardContent>
               <Typography variant="h6" fontWeight="bold">
@@ -94,6 +107,21 @@ const ItemList = () => {
           </Card>
         ))}
       </Container>
+      <CustomModal open={open} onClose={handleClose}>
+        {selectedItem && (
+          <>
+            <Typography variant="h5" fontWeight="bold">
+              {selectedItem.nome}
+            </Typography>
+            <Typography variant="body1" mt={1}>
+              Tipo: {selectedItem.tipo_estabelecimento.nome}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mt={1}>
+              Endereço: {selectedItem.endereco}
+            </Typography>
+          </>
+        )}
+      </CustomModal>
     </Box>
   );
 };
