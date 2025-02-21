@@ -8,10 +8,14 @@
     "build": "tsc -b && vite build",
     "serve-dist": "serve -s dist",
     "build-and-serve": "npm run build && npm run serve-dist",
+    "build:android": "npm run build && npx cap sync && npx cap open android",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^7.0.1",
+    "@capacitor/cli": "^7.0.1",
+    "@capacitor/core": "^7.0.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^3.10.0",
@@ -22,6 +26,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^7.1.5",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
