@@ -21,6 +21,9 @@ export const estabelecimentoSchema = yup.object().shape({
     .string()
     .length(14, "CNPJ deve ter 14 dígitos")
     .required("CNPJ é obrigatório"),
+  tipoEstabelecimento: yup
+    .string()
+    .required("Tipo de estabelecimento é obrigatório"), // Adicionando validação
   cep: yup
     .string()
     .length(8, "CEP deve ter 8 dígitos")

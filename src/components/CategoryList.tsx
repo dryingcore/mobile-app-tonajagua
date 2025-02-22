@@ -4,7 +4,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 interface Category {
   id: number;
   nome: string;
-  icone: string;
+  foto_url: string;
 }
 
 const CategoryList: React.FC = () => {
@@ -79,7 +79,7 @@ const CategoryList: React.FC = () => {
             }}
           >
             <img
-              src={"logo.png"}
+              src={category.foto_url}
               alt={category.nome}
               style={{
                 width: 50,
