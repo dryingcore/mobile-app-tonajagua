@@ -11,11 +11,11 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: "Meu App PWA",
-        short_name: "App PWA",
+        name: "#ToNaJagua",
+        short_name: "#ToNaJagua",
         description: "Descrição do app",
         start_url: "/",
-        display: "fullscreen", // Isso garante que o app se comporte sem a barra de navegação
+        display: "standalone", // Isso garante que o app se comporte sem a barra de navegação
         theme_color: "#ffffff",
         background_color: "#ffffff", // Adicionando a cor de fundo
         icons: [
