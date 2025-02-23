@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <ImageCarrossel />  
+      <ImageCarrossel />
       <CategoryList />
       <ItemList />
     </>

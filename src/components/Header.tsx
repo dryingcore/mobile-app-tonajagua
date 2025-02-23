@@ -1,4 +1,5 @@
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { HamburgerMenu } from "./HamburguerMenu";
 
 export default function Header() {
   return (
@@ -34,14 +35,7 @@ export default function Header() {
               marginRight: 8,
             }}
           />
-          <Box>
-            <Typography variant="body2" fontWeight="bold">
-              #NÓS❤️CAMACHO
-            </Typography>
-            <Typography variant="caption" color="gray">
-              Associação Amigos <br /> Balneário Camacho
-            </Typography>
-          </Box>
+          <HamburgerMenu />
         </Box>
 
         {/* Hashtag à direita */}

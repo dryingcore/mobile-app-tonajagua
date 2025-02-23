@@ -38,9 +38,9 @@ export default function RegisterPage() {
             endereco: data.endereco,
             senha_acesso: data.senhaAcesso,
             tipo_estabelecimento: data.tipoEstabelecimento,
-            aberto: true, // pode ser ajustado
-            website: "", // pode ser preenchido se necessário
-            promocao_rolando: false, // pode ser ajustado
+            aberto: false,
+            website: "",
+            promocao_rolando: false,
           }),
         }
       );
