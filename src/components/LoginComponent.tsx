@@ -1,9 +1,11 @@
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, TextField, Button, Typography, Alert } from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import * as yup from "yup";
-import { Link } from "react-router-dom"; // Importe o Link
 
 interface LoginFormInputs {
   email: string;
@@ -21,11 +23,11 @@ const loginSchema = yup.object().shape({
     .required("A senha é obrigatória"),
 });
 
-interface LoginComponentProps {
-  onSubmit: (data: LoginFormInputs) => void;
-}
+export default function LoginComponent() {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-export default function LoginComponent({ onSubmit }: LoginComponentProps) {
   const {
     register,
     handleSubmit,
@@ -34,12 +36,42 @@ export default function LoginComponent({ onSubmit }: LoginComponentProps) {
     resolver: yupResolver(loginSchema),
   });
 
+  const onSubmit = async (data: LoginFormInputs) => {
+    setErrorMessage(null);
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://s01.decodesoftware.tech:5771/login",
+        {
+          email: data.email,
+          password: data.senha,
+        },
+        { withCredentials: true } // 🔹 Permite que os cookies sejam enviados e armazenados
+      );
+
+      const { accessToken } = response.data;
+
+      // Salva o token no localStorage
+      localStorage.setItem("accessToken", accessToken);
+
+      // Redireciona o usuário para a página protegida
+      navigate("/home");
+    } catch (error: any) {
+      setErrorMessage(error.response?.data?.error || "Erro ao fazer login.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 2 }}
     >
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+
       <TextField
         label="E-mail"
         variant="outlined"
@@ -59,8 +91,14 @@ export default function LoginComponent({ onSubmit }: LoginComponentProps) {
         helperText={errors.senha?.message}
         required
       />
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        Entrar
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        disabled={loading}
+      >
+        {loading ? "Entrando..." : "Entrar"}
       </Button>
 
       <Box sx={{ display: "flex", alignItems: "center", marginY: 2 }}>
@@ -80,7 +118,6 @@ export default function LoginComponent({ onSubmit }: LoginComponentProps) {
         Entrar com Google
       </Button>
 
-      {/* Adicionando a opção de registrar */}
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
         <Typography variant="body2">
           Não tem uma conta?{" "}

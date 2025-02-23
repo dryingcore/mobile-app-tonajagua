@@ -1,6 +1,9 @@
-import { TextField, Button } from "@mui/material";
+import { useState } from "react";
+import { TextField, Button, Alert } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { pessoaFisicaSchema } from "../utils/validationSchema";
 
 interface PessoaFisicaFormData {
@@ -10,11 +13,11 @@ interface PessoaFisicaFormData {
   confirmarSenha: string;
 }
 
-interface FormPessoaFisicaProps {
-  onSubmit: (data: PessoaFisicaFormData) => void;
-}
+export default function FormPessoaFisica() {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-export default function FormPessoaFisica({ onSubmit }: FormPessoaFisicaProps) {
   const {
     register,
     handleSubmit,
@@ -23,8 +26,32 @@ export default function FormPessoaFisica({ onSubmit }: FormPessoaFisicaProps) {
     resolver: yupResolver(pessoaFisicaSchema),
   });
 
+  const onSubmit = async (data: PessoaFisicaFormData) => {
+    setErrorMessage(null);
+    setLoading(true);
+
+    try {
+      await axios.post("https://s01.decodesoftware.tech:5771/register", {
+        name: data.nome,
+        email: data.email,
+        password: data.senha,
+      });
+
+      // Redireciona para a tela de login após o cadastro bem-sucedido
+      navigate("/home");
+    } catch (error: any) {
+      setErrorMessage(
+        error.response?.data?.error || "Erro ao cadastrar usuário."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+
       <TextField
         label="Nome"
         {...register("nome")}
@@ -60,14 +87,16 @@ export default function FormPessoaFisica({ onSubmit }: FormPessoaFisicaProps) {
         error={!!errors.confirmarSenha}
         helperText={errors.confirmarSenha?.message}
       />
+
       <Button
         type="submit"
         variant="contained"
         color="primary"
         fullWidth
         sx={{ mt: 2 }}
+        disabled={loading}
       >
-        Cadastrar
+        {loading ? "Cadastrando..." : "Cadastrar"}
       </Button>
     </form>
   );

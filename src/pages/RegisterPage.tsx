@@ -21,6 +21,42 @@ export default function RegisterPage() {
     navigate("/home"); // it must have auth before (just4development)
   };
 
+  const handleEstabelecimentoSubmit = async (data: any) => {
+    console.log("Dados enviados:", data);
+
+    try {
+      const response = await fetch(
+        "https://s01.decodesoftware.tech/estabelecimentos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nome: data.nomeEstabelecimento,
+            cnpj: data.cnpj,
+            endereco: data.endereco,
+            senha_acesso: data.senhaAcesso,
+            tipo_estabelecimento: data.tipoEstabelecimento,
+            aberto: false,
+            website: "",
+            promocao_rolando: false,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar estabelecimento");
+      }
+
+      alert("Estabelecimento cadastrado com sucesso!");
+      navigate("/home"); // Redireciona para /home após o sucesso
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error);
+      alert("Falha ao cadastrar estabelecimento");
+    }
+  };
+
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ p: 4, mt: 5 }}>
@@ -43,7 +79,7 @@ export default function RegisterPage() {
         {type === "Pessoa Física" ? (
           <FormPessoaFisica onSubmit={handleSubmit} />
         ) : (
-          <EstabelecimentoForm onSubmit={handleSubmit} />
+          <EstabelecimentoForm onSubmit={handleEstabelecimentoSubmit} />
         )}
       </Paper>
     </Container>

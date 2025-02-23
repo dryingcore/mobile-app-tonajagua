@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -18,11 +19,16 @@ function App() {
         }}
       >
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/home" element={<HomePage />} />
+
+          {/* Rota protegida */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/home" element={<HomePage />} />
+          </Route>
         </Routes>
       </Container>
+
       <div
         style={{
           position: "fixed",
