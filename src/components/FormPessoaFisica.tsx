@@ -38,7 +38,7 @@ export default function FormPessoaFisica() {
       });
 
       // Redireciona para a tela de login após o cadastro bem-sucedido
-      navigate("/");
+      navigate("/home");
     } catch (error: any) {
       setErrorMessage(
         error.response?.data?.error || "Erro ao cadastrar usuário."

@@ -41,10 +41,14 @@ export default function LoginComponent() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5771/login", {
-        email: data.email,
-        password: data.senha,
-      });
+      const response = await axios.post(
+        "http://localhost:5771/login",
+        {
+          email: data.email,
+          password: data.senha,
+        },
+        { withCredentials: true } // 🔹 Permite que os cookies sejam enviados e armazenados
+      );
 
       const { accessToken } = response.data;
 
