@@ -5,7 +5,7 @@ export default function PrivateRoute() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5771/validate-token", {
+    fetch("https://s01.decodesoftware.tech:5771/validate-token", {
       method: "GET",
       credentials: "include", // 🔹 Permite envio de cookies
     })

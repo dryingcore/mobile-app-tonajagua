@@ -31,7 +31,7 @@ export default function FormPessoaFisica() {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:5771/register", {
+      await axios.post("https://s01.decodesoftware.tech:5771/register", {
         name: data.nome,
         email: data.email,
         password: data.senha,

@@ -42,7 +42,7 @@ export default function LoginComponent() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5771/login",
+        "https://s01.decodesoftware.tech:5771/login",
         {
           email: data.email,
           password: data.senha,
