@@ -2,10 +2,6 @@ import { Box, Container, Typography, Avatar } from "@mui/material";
 import LoginComponent from "../components/LoginComponent";
 
 export default function LoginPage() {
-  const handleLogin = (data: { email: string; senha: string }) => {
-    console.log("Login realizado:", data);
-  };
-
   return (
     <Container maxWidth="xs">
       <Box
@@ -23,7 +19,7 @@ export default function LoginPage() {
         <Typography variant="h5" component="h1" gutterBottom>
           Faça seu login
         </Typography>
-        <LoginComponent onSubmit={handleLogin} />
+        <LoginComponent />
       </Box>
     </Container>
   );

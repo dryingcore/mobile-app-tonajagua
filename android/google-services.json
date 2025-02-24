@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185647080473",
+    "project_id": "tonajagua-auth",
+    "storage_bucket": "tonajagua-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185647080473:android:c0ff83c342586b673bf688",
+        "android_client_info": {
+          "package_name": "tech.decodesoftware.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOOMDDbkCwaRCrkElElMGOrV2nCNMxoF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

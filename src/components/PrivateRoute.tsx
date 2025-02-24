@@ -1,22 +1,12 @@
-import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function PrivateRoute() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    fetch("https://s01.decodesoftware.tech:5771/validate-token", {
-      method: "GET",
-      credentials: "include", // 🔹 Permite envio de cookies
-    })
-      .then((res) => res.json())
-      .then((data) => setIsAuthenticated(data.valid))
-      .catch(() => setIsAuthenticated(false));
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <p>Carregando...</p>;
+  if (loading) {
+    return <p>Carregando...</p>; // Pode ser um Spinner ou outra UI de carregamento
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 }

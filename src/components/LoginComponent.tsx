@@ -1,11 +1,18 @@
 import { useState } from "react";
-import { Box, TextField, Button, Typography, Alert } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import * as yup from "yup";
+import { useAuth } from "../hooks/useAuth";
 
 interface LoginFormInputs {
   email: string;
@@ -13,18 +20,13 @@ interface LoginFormInputs {
 }
 
 const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("E-mail inválido")
-    .required("O e-mail é obrigatório"),
-  senha: yup
-    .string()
-    .min(6, "A senha deve ter pelo menos 6 caracteres")
-    .required("A senha é obrigatória"),
+  email: yup.string().email("E-mail inválido").required("O e-mail é obrigatório"),
+  senha: yup.string().min(6, "A senha deve ter pelo menos 6 caracteres").required("A senha é obrigatória"),
 });
 
 export default function LoginComponent() {
   const navigate = useNavigate();
+  const { login } = useAuth(); // 🔹 Importando função de login
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -32,33 +34,18 @@ export default function LoginComponent() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>({
-    resolver: yupResolver(loginSchema),
-  });
+  } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data: LoginFormInputs) => {
-    setErrorMessage(null);
     setLoading(true);
-
+    setErrorMessage(null);
+    
     try {
-      const response = await axios.post(
-        "https://s01.decodesoftware.tech:5771/login",
-        {
-          email: data.email,
-          password: data.senha,
-        },
-        { withCredentials: true } // 🔹 Permite que os cookies sejam enviados e armazenados
-      );
-
-      const { accessToken } = response.data;
-
-      // Salva o token no localStorage
-      localStorage.setItem("accessToken", accessToken);
-
-      // Redireciona o usuário para a página protegida
-      navigate("/home");
+      await login(data.email, data.senha);
+      navigate("/home"); // 🔹 Redireciona após login bem-sucedido
     } catch (error: any) {
-      setErrorMessage(error.response?.data?.error || "Erro ao fazer login.");
+      setErrorMessage("Falha ao fazer login. Verifique suas credenciais.");
+      console.error("Erro no login:", error.message);
     } finally {
       setLoading(false);
     }
@@ -80,6 +67,8 @@ export default function LoginComponent() {
         error={!!errors.email}
         helperText={errors.email?.message}
         required
+        onChange={() => setErrorMessage(null)}
+        disabled={loading}
       />
       <TextField
         label="Senha"
@@ -90,41 +79,27 @@ export default function LoginComponent() {
         error={!!errors.senha}
         helperText={errors.senha?.message}
         required
-      />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
+        onChange={() => setErrorMessage(null)}
         disabled={loading}
-      >
-        {loading ? "Entrando..." : "Entrar"}
+      />
+      <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+        {loading ? <CircularProgress size={24} color="inherit" /> : "Entrar"}
       </Button>
 
       <Box sx={{ display: "flex", alignItems: "center", marginY: 2 }}>
         <Box sx={{ flexGrow: 1, height: 1, borderBottom: "1px solid #ccc" }} />
-        <Typography variant="body2" sx={{ marginX: 1 }}>
-          ou
-        </Typography>
+        <Typography variant="body2" sx={{ marginX: 1 }}>ou</Typography>
         <Box sx={{ flexGrow: 1, height: 1, borderBottom: "1px solid #ccc" }} />
       </Box>
 
-      <Button
-        variant="outlined"
-        color="secondary"
-        fullWidth
-        startIcon={<GoogleIcon />}
-      >
-        Entrar com Google
+      <Button variant="outlined" color="secondary" fullWidth startIcon={<GoogleIcon />} disabled={loading}>
+        {loading ? <CircularProgress size={24} color="inherit" /> : "Entrar com Google"}
       </Button>
 
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
         <Typography variant="body2">
           Não tem uma conta?{" "}
-          <Link
-            to="/register"
-            style={{ textDecoration: "none", color: "#1976d2" }}
-          >
+          <Link to="/register" style={{ textDecoration: "none", color: "#1976d2" }}>
             Registre-se
           </Link>
         </Typography>
