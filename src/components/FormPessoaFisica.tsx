@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { pessoaFisicaSchema } from "../utils/validationSchema";
+import { useAuth } from "../hooks/useAuth"; // 🔹 Importa o hook de autenticação
 
 interface PessoaFisicaFormData {
   nome: string;
@@ -14,6 +15,7 @@ interface PessoaFisicaFormData {
 
 export default function FormPessoaFisica() {
   const navigate = useNavigate();
+  const { signUp } = useAuth(); // 🔹 Usa a função de cadastro do Firebase
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,14 +32,12 @@ export default function FormPessoaFisica() {
     setLoading(true);
 
     try {
-      console.log({ data });
+      await signUp(data.email, data.senha); // 🔹 Registra o usuário no Firebase
 
       // Redireciona para a tela de login após o cadastro bem-sucedido
       navigate("/home");
     } catch (error: any) {
-      setErrorMessage(
-        error.response?.data?.error || "Erro ao cadastrar usuário."
-      );
+      setErrorMessage(error.message || "Erro ao cadastrar usuário.");
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,5 @@
 {
-  "name": "pwa-react",
+  "name": "tonajagua",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor-firebase/authentication": "^7.0.0",
     "@capacitor/android": "^7.0.1",
     "@capacitor/cli": "^7.0.1",
     "@capacitor/core": "^7.0.1",
@@ -21,9 +22,8 @@
     "@hookform/resolvers": "^3.10.0",
     "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.4.3",
-    "@types/react-slick": "^0.23.13",
-    "@types/yup": "^0.29.14",
     "axios": "^1.7.9",
+    "firebase": "^11.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
@@ -35,8 +35,10 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@types/react-slick": "^0.23.13",
     "@eslint/js": "^9.19.0",
     "@types/react": "^19.0.8",
+    "@types/yup": "^0.29.14",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.19.0",
