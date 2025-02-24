@@ -3,7 +3,6 @@ import { TextField, Button, Alert } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { pessoaFisicaSchema } from "../utils/validationSchema";
 
 interface PessoaFisicaFormData {
@@ -31,11 +30,7 @@ export default function FormPessoaFisica() {
     setLoading(true);
 
     try {
-      await axios.post("https://s01.decodesoftware.tech:5771/register", {
-        name: data.nome,
-        email: data.email,
-        password: data.senha,
-      });
+      console.log({ data });
 
       // Redireciona para a tela de login após o cadastro bem-sucedido
       navigate("/home");

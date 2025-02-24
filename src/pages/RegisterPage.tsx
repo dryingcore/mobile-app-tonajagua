@@ -16,11 +16,6 @@ export default function RegisterPage() {
   const [type, setType] = useState<CadastroTipo>("Pessoa Física");
   const navigate = useNavigate();
 
-  const handleSubmit = (data: any) => {
-    console.log("Dados enviados:", data);
-    navigate("/home"); // it must have auth before (just4development)
-  };
-
   const handleEstabelecimentoSubmit = async (data: any) => {
     console.log("Dados enviados:", data);
 
@@ -77,7 +72,7 @@ export default function RegisterPage() {
         </TextField>
 
         {type === "Pessoa Física" ? (
-          <FormPessoaFisica onSubmit={handleSubmit} />
+          <FormPessoaFisica />
         ) : (
           <EstabelecimentoForm onSubmit={handleEstabelecimentoSubmit} />
         )}

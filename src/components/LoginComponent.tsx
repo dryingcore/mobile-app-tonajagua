@@ -1,10 +1,16 @@
 import { useState } from "react";
-import { Box, TextField, Button, Typography, Alert } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import * as yup from "yup";
 
 interface LoginFormInputs {
@@ -32,36 +38,13 @@ export default function LoginComponent() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>({
-    resolver: yupResolver(loginSchema),
-  });
+  } = useForm<LoginFormInputs>({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data: LoginFormInputs) => {
-    setErrorMessage(null);
+    console.log(data);
     setLoading(true);
-
-    try {
-      const response = await axios.post(
-        "https://s01.decodesoftware.tech:5771/login",
-        {
-          email: data.email,
-          password: data.senha,
-        },
-        { withCredentials: true } // 🔹 Permite que os cookies sejam enviados e armazenados
-      );
-
-      const { accessToken } = response.data;
-
-      // Salva o token no localStorage
-      localStorage.setItem("accessToken", accessToken);
-
-      // Redireciona o usuário para a página protegida
-      navigate("/home");
-    } catch (error: any) {
-      setErrorMessage(error.response?.data?.error || "Erro ao fazer login.");
-    } finally {
-      setLoading(false);
-    }
+    alert("login");
+    navigate("/home");
   };
 
   return (
@@ -80,6 +63,8 @@ export default function LoginComponent() {
         error={!!errors.email}
         helperText={errors.email?.message}
         required
+        onChange={() => setErrorMessage(null)}
+        disabled={loading} // 🔹 Desabilita o input enquanto carrega
       />
       <TextField
         label="Senha"
@@ -90,6 +75,8 @@ export default function LoginComponent() {
         error={!!errors.senha}
         helperText={errors.senha?.message}
         required
+        onChange={() => setErrorMessage(null)}
+        disabled={loading} // 🔹 Desabilita o input enquanto carrega
       />
       <Button
         type="submit"
@@ -98,7 +85,7 @@ export default function LoginComponent() {
         fullWidth
         disabled={loading}
       >
-        {loading ? "Entrando..." : "Entrar"}
+        {loading ? <CircularProgress size={24} color="inherit" /> : "Entrar"}
       </Button>
 
       <Box sx={{ display: "flex", alignItems: "center", marginY: 2 }}>
@@ -114,8 +101,13 @@ export default function LoginComponent() {
         color="secondary"
         fullWidth
         startIcon={<GoogleIcon />}
+        disabled={loading}
       >
-        Entrar com Google
+        {loading ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          "Entrar com Google"
+        )}
       </Button>
 
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
