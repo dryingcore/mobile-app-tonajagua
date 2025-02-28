@@ -17,7 +17,7 @@ export function HamburgerMenu() {
 
   const menuOptions = [
     { label: "Início", path: "/home" },
-    { label: "Perfil", path: "/perfil" },
+    { label: "Perfil", path: "/profile" },
     { label: "Conta", path: "/conta" },
     { label: "Sobre Nós", path: "/sobre" },
     { label: "Configurações", path: "/configuracoes" },
