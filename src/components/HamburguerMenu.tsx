@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importando o hook de navegação
 import {
   Drawer,
   IconButton,
   List,
   ListItem,
   ListItemButton,
-  ListItemText,
   Box,
   Typography,
 } from "@mui/material";
@@ -13,9 +13,23 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 export function HamburgerMenu() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate(); // Inicializando a função de navegação
+
+  const menuOptions = [
+    { label: "Início", path: "/home" },
+    { label: "Perfil", path: "/perfil" },
+    { label: "Conta", path: "/conta" },
+    { label: "Sobre Nós", path: "/sobre" },
+    { label: "Configurações", path: "/configuracoes" },
+  ];
 
   const toggleDrawer = (isOpen: boolean) => () => {
     setOpen(isOpen);
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path); // Redireciona para a página escolhida
+    setOpen(false); // Fecha o menu
   };
 
   return (
@@ -35,7 +49,7 @@ export function HamburgerMenu() {
         <Box sx={{ p: 3, textAlign: "center" }}>
           <Box>
             <img
-              src="/logo.png" // Substitua pelo caminho correto do logo
+              src="/logo.png"
               alt="Logo"
               style={{
                 width: 40,
@@ -53,10 +67,10 @@ export function HamburgerMenu() {
           </Box>
 
           <List>
-            {["Perfil", "Conta", "Sobre Nós", "Configurações"].map((text) => (
-              <ListItem key={text}>
-                <ListItemButton onClick={toggleDrawer(false)}>
-                  <ListItemText primary={text} />
+            {menuOptions.map(({ label, path }) => (
+              <ListItem key={label} disablePadding>
+                <ListItemButton onClick={() => handleNavigation(path)}>
+                  <Typography variant="body2">{label}</Typography>
                 </ListItemButton>
               </ListItem>
             ))}
