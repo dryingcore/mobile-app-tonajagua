@@ -34,6 +34,16 @@ export function HamburgerMenu() {
       >
         <Box sx={{ p: 3, textAlign: "center" }}>
           <Box>
+            <img
+              src="/logo.png" // Substitua pelo caminho correto do logo
+              alt="Logo"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                marginRight: 8,
+              }}
+            />
             <Typography variant="body2" fontWeight="bold">
               #NÓS❤️CAMACHO
             </Typography>

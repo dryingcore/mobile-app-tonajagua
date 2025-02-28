@@ -25,16 +25,6 @@ export default function Header() {
       >
         {/* Logo e texto à esquerda */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <img
-            src="/logo.png" // Substitua pelo caminho correto do logo
-            alt="Logo"
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              marginRight: 8,
-            }}
-          />
           <HamburgerMenu />
         </Box>
 

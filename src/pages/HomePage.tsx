@@ -9,6 +9,7 @@ export default function HomePage() {
       <Header />
       <ImageCarrossel />
       <CategoryList />
+      <hr style={{ width: "100%", height: "0px" }} />
       <ItemList />
     </>
   );
