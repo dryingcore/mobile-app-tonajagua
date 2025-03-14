@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
   User,
+  updateProfile,
 } from "firebase/auth";
 
 // Criando o contexto de autenticação
@@ -13,7 +14,7 @@ const AuthContext = createContext<{
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 } | null>(null);
 
@@ -33,8 +34,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const signUp = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(auth, email, password);
+  const signUp = async (name: string, email: string, password: string) => {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    await updateProfile(user, { displayName: name });
+
+    setUser({ ...user, displayName: name });
   };
 
   const logout = async () => {
@@ -50,6 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  if (!context)
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
   return context;
 };

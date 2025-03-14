@@ -7,22 +7,21 @@ import {
   IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-
-interface User {
-  name: string;
-  surname: string;
-  email: string;
-  avatarUrl: string;
-}
-
-const user: User = {
-  name: "Gabriel",
-  surname: "Rocha",
-  email: "gabriel@decode.software",
-  avatarUrl: "https://via.placeholder.com/150",
-};
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 export default function ProfileComponent() {
+  const [user, setUser] = useState<User | null>(null);
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
   return (
     <Box
       sx={{
@@ -47,7 +46,7 @@ export default function ProfileComponent() {
       >
         <Box sx={{ position: "relative", display: "inline-block" }}>
           <Avatar
-            src={user.avatarUrl}
+            src={user?.photoURL || "https://via.placeholder.com/150"}
             sx={{ width: 100, height: 100, margin: "0 auto" }}
           />
           <IconButton
@@ -70,37 +69,37 @@ export default function ProfileComponent() {
           Editar Perfil
         </Typography>
 
-        <Box component="form" sx={{ mt: 2 }}>
-          <TextField
-            label="Nome"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            defaultValue={user.name}
-          />
-          <TextField
-            label="Sobrenome"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            defaultValue={user.surname}
-          />
-          <TextField
-            label="E-mail"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            defaultValue={user.email}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ marginTop: 2 }}
-          >
-            Salvar Alterações
-          </Button>
-        </Box>
+        {user ? (
+          <Box component="form" sx={{ mt: 2 }}>
+            <TextField
+              label="Nome"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              defaultValue={user.displayName || ""}
+            />
+            <TextField
+              label="E-mail"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              defaultValue={user.email || ""}
+              disabled
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ marginTop: 2 }}
+            >
+              Salvar Alterações
+            </Button>
+          </Box>
+        ) : (
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
+            Nenhum usuário logado.
+          </Typography>
+        )}
       </Box>
     </Box>
   );
