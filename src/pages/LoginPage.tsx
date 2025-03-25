@@ -13,7 +13,7 @@ export default function LoginPage() {
       >
         <Avatar
           alt="Logo"
-          src="https://placehold.co/100x100.png"
+          src="/logo.png"
           sx={{ width: 100, height: 100, marginBottom: 2 }}
         />
         <Typography variant="h5" component="h1" gutterBottom>
