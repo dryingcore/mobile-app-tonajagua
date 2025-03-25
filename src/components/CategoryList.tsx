@@ -16,7 +16,7 @@ const CategoryList: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://s01.decodesoftware.tech:4321/estabelecimentos/tipos"
+          "https://s01.decodesoftware.tech/estabelecimentos/tipos"
         );
 
         if (!response.ok) {
