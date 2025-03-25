@@ -30,7 +30,7 @@ const ItemList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://s01.decodesoftware.tech:4321/estabelecimentos"
+          "https://s01.decodesoftware.tech/estabelecimentos"
         );
         if (!response.ok) throw new Error("Failed to fetch data");
 
