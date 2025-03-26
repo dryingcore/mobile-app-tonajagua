@@ -7,7 +7,11 @@ interface Category {
   foto_url: string;
 }
 
-const CategoryList: React.FC = () => {
+interface CategoryListProps {
+  onSelectCategory: (categoria: string) => void;
+}
+
+const CategoryList: React.FC<CategoryListProps> = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +20,7 @@ const CategoryList: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://s01.decodesoftware.tech:4321/estabelecimentos/tipos"
+          "https://s01.decodesoftware.tech/estabelecimentos/tipos"
         );
 
         if (!response.ok) {
@@ -24,8 +28,6 @@ const CategoryList: React.FC = () => {
         }
 
         const json = await response.json();
-        console.log("Resposta da API:", json); // Debug
-
         if (!json.data || !Array.isArray(json.data)) {
           throw new Error("A resposta da API não contém o array esperado.");
         }
@@ -42,29 +44,23 @@ const CategoryList: React.FC = () => {
     fetchCategories();
   }, []);
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (error) {
-    return <Typography color="error">Erro: {error}</Typography>;
-  }
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">Erro: {error}</Typography>;
 
   return (
     <Box sx={{ width: "100%", padding: "10px" }}>
-      <Typography variant="h6" fontWeight="bold">
+      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, mt: 2 }}>
         Categorias
       </Typography>
 
-      {/* Lista deslizante */}
       <Box
         sx={{
           display: "flex",
           overflowX: "auto",
           gap: 2,
           whiteSpace: "nowrap",
-          scrollbarWidth: "none", // Oculta scrollbar no Firefox
-          "&::-webkit-scrollbar": { display: "none" }, // Oculta scrollbar no Chrome/Safari
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
         {categories.map((category) => (
@@ -75,8 +71,11 @@ const CategoryList: React.FC = () => {
               flexDirection: "column",
               alignItems: "center",
               textAlign: "center",
-              minWidth: "80px", // Ajuste para evitar cortes em telas pequenas
+              minWidth: "80px",
+              cursor: "pointer",
+              "&:hover": { opacity: 0.7 },
             }}
+            onClick={() => onSelectCategory(category.nome)}
           >
             <img
               src={category.foto_url}

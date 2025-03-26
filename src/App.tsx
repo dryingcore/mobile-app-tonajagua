@@ -5,6 +5,8 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import ProfilePage from "./pages/ProfilePage";
+import colorSchema from "../color-schema.json";
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
+          backgroundColor: colorSchema.background["secondary-bg-color"],
         }}
       >
         <Routes>
@@ -26,6 +29,7 @@ function App() {
           {/* Rota protegida */}
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Routes>
       </Container>

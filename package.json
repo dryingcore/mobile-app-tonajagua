@@ -1,11 +1,12 @@
 {
   "name": "tonajagua",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "clean-install": "rm -rf node_modules && rm -rf package-lock.json && npm install",
     "serve-dist": "serve -s dist",
     "build-and-serve": "npm run build && npm run serve-dist",
     "build:android": "npm run build && npx cap sync && npx cap open android",
@@ -22,6 +23,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.4.3",
+    "@react-google-maps/api": "^2.20.6",
     "axios": "^1.7.9",
     "firebase": "^11.3.1",
     "react": "^19.0.0",
@@ -35,11 +37,11 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "@types/react-slick": "^0.23.13",
     "@eslint/js": "^9.19.0",
     "@types/react": "^19.0.8",
-    "@types/yup": "^0.29.14",
     "@types/react-dom": "^19.0.3",
+    "@types/react-slick": "^0.23.13",
+    "@types/yup": "^0.29.14",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.19.0",
     "eslint-plugin-react-hooks": "^5.0.0",

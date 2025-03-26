@@ -8,6 +8,7 @@ import {
   Container,
 } from "@mui/material";
 import CustomModal from "./Modal";
+import GoogleMapComponent from "./GoogleMaps";
 
 interface Item {
   id: number;
@@ -19,7 +20,11 @@ interface Item {
   };
 }
 
-const ItemList = () => {
+interface ItemListProps {
+  categoria?: string;
+}
+
+const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,24 +33,28 @@ const ItemList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(
-          "https://s01.decodesoftware.tech:4321/estabelecimentos"
-        );
+        const url = categoria
+          ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(
+              categoria
+            )}`
+          : "https://s01.decodesoftware.tech/estabelecimentos";
+
+        const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const responseData = await response.json();
-        const data: Item[] = responseData.data;
-
-        setItems(data);
+        setItems(responseData.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erro desconhecido");
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, []);
+  }, [categoria]); // Atualiza os dados quando a categoria mudar
 
   const handleOpen = (item: Item) => {
     setSelectedItem(item);
@@ -119,6 +128,8 @@ const ItemList = () => {
             <Typography variant="body2" color="text.secondary" mt={1}>
               Endereço: {selectedItem.endereco}
             </Typography>
+            <hr />
+            <GoogleMapComponent address={selectedItem.endereco} />
           </>
         )}
       </CustomModal>

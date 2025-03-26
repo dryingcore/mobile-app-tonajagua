@@ -32,7 +32,7 @@ export default function FormPessoaFisica() {
     setLoading(true);
 
     try {
-      await signUp(data.email, data.senha); // 🔹 Registra o usuário no Firebase
+      await signUp(data.nome, data.email, data.senha); // 🔹 Registra o usuário no Firebase
 
       // Redireciona para a tela de login após o cadastro bem-sucedido
       navigate("/home");
