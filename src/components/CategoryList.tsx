@@ -51,6 +51,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ onSelectCategory }) => {
     <Box sx={{ width: "100%", padding: "10px" }}>
       <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, mt: 2 }}>
         Categorias
+        <Typography variant="body2" color="textSecondary"> </Typography>
       </Typography>
 
       <Box
