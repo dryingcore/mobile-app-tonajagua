@@ -8,6 +8,7 @@ import {
   Container,
 } from "@mui/material";
 import CustomModal from "./Modal";
+import GoogleMapComponent from "./GoogleMaps";
 
 interface Item {
   id: number;
@@ -119,6 +120,8 @@ const ItemList = () => {
             <Typography variant="body2" color="text.secondary" mt={1}>
               Endereço: {selectedItem.endereco}
             </Typography>
+            <hr />
+            <GoogleMapComponent address={selectedItem.endereco} />
           </>
         )}
       </CustomModal>
