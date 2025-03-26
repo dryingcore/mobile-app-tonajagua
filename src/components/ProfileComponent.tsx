@@ -20,12 +20,15 @@ export default function ProfileComponent() {
   const [user, setUser] = useState<User | null>(null);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const auth = getAuth();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setName(firebaseUser?.displayName || "");
+      if (firebaseUser) {
+        setUser(firebaseUser);
+        setName(firebaseUser.displayName || "");
+      }
     });
 
     return () => unsubscribe();
@@ -34,23 +37,38 @@ export default function ProfileComponent() {
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (!event.target.files || !event.target.files[0] || !user) return;
+    if (!event.target.files || !event.target.files[0]) return;
 
     const file = event.target.files[0];
     setLoading(true);
+    setMessage("");
 
     try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        console.error("Erro: Nenhum usuário autenticado.");
+        setMessage("Erro: Nenhum usuário autenticado.");
+        return;
+      }
+
       const storage = getStorage();
-      const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+      const storageRef = ref(storage, `profile_pictures/${currentUser.uid}`);
 
       await uploadBytes(storageRef, file);
       const photoURL = await getDownloadURL(storageRef);
 
-      await updateProfile(user, { photoURL });
+      await updateProfile(currentUser, { photoURL });
 
-      setUser({ ...user, photoURL });
+      await currentUser.reload();
+
+      setUser({ ...auth.currentUser });
+
+      setMessage("Foto atualizada com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar foto:", error);
+      setMessage("Erro ao atualizar foto.");
     } finally {
       setLoading(false);
     }
@@ -60,13 +78,15 @@ export default function ProfileComponent() {
     if (!user || !name.trim()) return;
 
     setLoading(true);
+    setMessage("");
 
     try {
+      setUser(getAuth().currentUser);
       await updateProfile(user, { displayName: name });
-
-      setUser({ ...user, displayName: name });
+      setMessage("Perfil atualizado com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
+      setMessage("Erro ao atualizar perfil.");
     } finally {
       setLoading(false);
     }
@@ -158,6 +178,12 @@ export default function ProfileComponent() {
         ) : (
           <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
             Nenhum usuário logado.
+          </Typography>
+        )}
+
+        {message && (
+          <Typography variant="body2" color="primary" sx={{ mt: 2 }}>
+            {message}
           </Typography>
         )}
       </Box>
