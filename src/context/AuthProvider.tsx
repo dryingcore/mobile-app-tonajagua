@@ -49,3 +49,4 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+export default AuthProvider;
