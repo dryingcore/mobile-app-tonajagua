@@ -18,12 +18,14 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function ProfileComponent() {
   const [user, setUser] = useState<User | null>(null);
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = getAuth();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      setName(firebaseUser?.displayName || "");
     });
 
     return () => unsubscribe();
@@ -32,18 +34,21 @@ export default function ProfileComponent() {
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (!event.target.files || !event.target.files[0]) return;
+    if (!event.target.files || !event.target.files[0] || !user) return;
 
     const file = event.target.files[0];
     setLoading(true);
 
     try {
-      const photoURL = await uploadProfilePicture(file);
-      if (photoURL) {
-        setUser((prevUser) =>
-          prevUser ? { ...prevUser, photoURL } : prevUser
-        );
-      }
+      const storage = getStorage();
+      const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+
+      await uploadBytes(storageRef, file);
+      const photoURL = await getDownloadURL(storageRef);
+
+      await updateProfile(user, { photoURL });
+
+      setUser({ ...user, photoURL });
     } catch (error) {
       console.error("Erro ao atualizar foto:", error);
     } finally {
@@ -51,22 +56,19 @@ export default function ProfileComponent() {
     }
   };
 
-  const uploadProfilePicture = async (file: File) => {
-    if (!user) return;
+  const handleUpdateProfile = async () => {
+    if (!user || !name.trim()) return;
 
-    const storage = getStorage();
-    const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+    setLoading(true);
 
     try {
-      await uploadBytes(storageRef, file);
-      const photoURL = await getDownloadURL(storageRef);
+      await updateProfile(user, { displayName: name });
 
-      await updateProfile(user, { photoURL });
-
-      return photoURL;
+      setUser({ ...user, displayName: name });
     } catch (error) {
-      console.error("Erro ao enviar imagem:", error);
-      throw error;
+      console.error("Erro ao atualizar perfil:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -125,20 +127,21 @@ export default function ProfileComponent() {
         </Typography>
 
         {user ? (
-          <Box component="form" sx={{ mt: 2 }}>
+          <Box sx={{ mt: 2 }}>
             <TextField
               label="Nome"
               variant="outlined"
               fullWidth
               margin="normal"
-              defaultValue={user.displayName || ""}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <TextField
               label="E-mail"
               variant="outlined"
               fullWidth
               margin="normal"
-              defaultValue={user.email || ""}
+              value={user.email || ""}
               disabled
             />
             <Button
@@ -146,6 +149,7 @@ export default function ProfileComponent() {
               color="primary"
               fullWidth
               sx={{ marginTop: 2 }}
+              onClick={handleUpdateProfile}
               disabled={loading}
             >
               {loading ? "Salvando..." : "Salvar Alterações"}
