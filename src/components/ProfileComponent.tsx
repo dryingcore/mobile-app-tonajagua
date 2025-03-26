@@ -8,10 +8,17 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  updateProfile,
+  User,
+} from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function ProfileComponent() {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
   const auth = getAuth();
 
   useEffect(() => {
@@ -21,6 +28,47 @@ export default function ProfileComponent() {
 
     return () => unsubscribe();
   }, [auth]);
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!event.target.files || !event.target.files[0]) return;
+
+    const file = event.target.files[0];
+    setLoading(true);
+
+    try {
+      const photoURL = await uploadProfilePicture(file);
+      if (photoURL) {
+        setUser((prevUser) =>
+          prevUser ? { ...prevUser, photoURL } : prevUser
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar foto:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const uploadProfilePicture = async (file: File) => {
+    if (!user) return;
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+
+    try {
+      await uploadBytes(storageRef, file);
+      const photoURL = await getDownloadURL(storageRef);
+
+      await updateProfile(user, { photoURL });
+
+      return photoURL;
+    } catch (error) {
+      console.error("Erro ao enviar imagem:", error);
+      throw error;
+    }
+  };
 
   return (
     <Box
@@ -50,6 +98,7 @@ export default function ProfileComponent() {
             sx={{ width: 100, height: 100, margin: "0 auto" }}
           />
           <IconButton
+            component="label"
             sx={{
               position: "absolute",
               bottom: 0,
@@ -62,6 +111,12 @@ export default function ProfileComponent() {
             }}
           >
             <EditIcon fontSize="small" />
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleFileChange}
+            />
           </IconButton>
         </Box>
 
@@ -91,8 +146,9 @@ export default function ProfileComponent() {
               color="primary"
               fullWidth
               sx={{ marginTop: 2 }}
+              disabled={loading}
             >
-              Salvar Alterações
+              {loading ? "Salvando..." : "Salvar Alterações"}
             </Button>
           </Box>
         ) : (
