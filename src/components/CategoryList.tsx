@@ -55,7 +55,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ onSelectCategory }) => {
         </Typography>
 
         <Typography variant="body2">
-          Selecione uma categoria para ver os estabelecimentos
+          Todos
         </Typography>
       </Box>
 
