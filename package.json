@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "clean-install"
     "serve-dist": "serve -s dist",
     "build-and-serve": "npm run build && npm run serve-dist",
     "build:android": "npm run build && npx cap sync && npx cap open android",
