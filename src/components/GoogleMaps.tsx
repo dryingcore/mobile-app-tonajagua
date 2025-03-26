@@ -5,7 +5,7 @@ interface GoogleMapProps {
 }
 
 const GoogleMapComponent: React.FC<GoogleMapProps> = ({ address }) => {
-  const apiKey = "";
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const [coordinates, setCoordinates] = useState<{
     lat: number;
     lng: number;
