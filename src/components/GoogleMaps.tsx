@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
+
 interface GoogleMapProps {
   address: string;
 }
 
 const GoogleMapComponent: React.FC<GoogleMapProps> = ({ address }) => {
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const [coordinates, setCoordinates] = useState<{
     lat: number;
     lng: number;
@@ -14,6 +14,7 @@ const GoogleMapComponent: React.FC<GoogleMapProps> = ({ address }) => {
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
+        const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
             address
@@ -37,15 +38,13 @@ const GoogleMapComponent: React.FC<GoogleMapProps> = ({ address }) => {
   return (
     <div style={{ width: "100%", height: "400px" }}>
       {coordinates ? (
-        <LoadScript googleMapsApiKey={apiKey}>
-          <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "100%" }}
-            center={coordinates}
-            zoom={15}
-          >
-            <Marker position={coordinates} />
-          </GoogleMap>
-        </LoadScript>
+        <GoogleMap
+          mapContainerStyle={{ width: "100%", height: "100%" }}
+          center={coordinates}
+          zoom={15}
+        >
+          <Marker position={coordinates} />
+        </GoogleMap>
       ) : (
         <p>Carregando mapa...</p>
       )}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography, MenuItem } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { estabelecimentoSchema } from "../utils/validationSchema";
 
@@ -22,45 +22,47 @@ interface FormEstabelecimentoProps {
 
 export function EstabelecimentoForm({ onSubmit }: FormEstabelecimentoProps) {
   const [step, setStep] = useState(1);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<EstabelecimentoFormData>({
+
+  const methods = useForm<EstabelecimentoFormData>({
     resolver: yupResolver(estabelecimentoSchema),
+    defaultValues: {
+      nomeEstabelecimento: "",
+      cnpj: "",
+      cep: "",
+      endereco: "",
+      tipoEstabelecimento: "", // Garante que nunca seja undefined
+      nomeDono: "",
+      cpfDono: "",
+      senhaAcesso: "",
+      confirmarSenhaAcesso: "",
+    },
   });
 
   const nextStep = () => setStep(2);
   const prevStep = () => setStep(1);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {step === 1 && (
-        <EstabelecimentoStep
-          register={register}
-          errors={errors}
-          onNext={nextStep}
-        />
-      )}
-      {step === 2 && (
-        <ProprietarioStep
-          register={register}
-          errors={errors}
-          onBack={prevStep}
-        />
-      )}
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        {step === 1 && <EstabelecimentoStep onNext={nextStep} />}
+        {step === 2 && <ProprietarioStep onBack={prevStep} />}
+      </form>
+    </FormProvider>
   );
 }
 
 interface StepProps {
-  register: any;
-  errors: any;
   onNext?: () => void;
   onBack?: () => void;
 }
 
-function EstabelecimentoStep({ register, errors, onNext }: StepProps) {
+function EstabelecimentoStep({ onNext }: StepProps) {
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<EstabelecimentoFormData>();
   const [tipos, setTipos] = useState<string[]>([]);
 
   useEffect(() => {
@@ -72,9 +74,12 @@ function EstabelecimentoStep({ register, errors, onNext }: StepProps) {
       );
   }, []);
 
+  const tipoEstabelecimento = watch("tipoEstabelecimento");
+
   return (
     <Box>
       <Typography variant="h6">Informações do Estabelecimento</Typography>
+
       <TextField
         label="Nome do Estabelecimento"
         {...register("nomeEstabelecimento")}
@@ -94,12 +99,16 @@ function EstabelecimentoStep({ register, errors, onNext }: StepProps) {
       <TextField
         select
         label="Tipo de Estabelecimento"
-        {...register("tipoEstabelecimento")}
+        value={tipoEstabelecimento || ""} // Garantindo valor inicial válido
         fullWidth
         margin="normal"
         error={!!errors.tipoEstabelecimento}
         helperText={errors.tipoEstabelecimento?.message}
+        onChange={(event) =>
+          setValue("tipoEstabelecimento", event.target.value)
+        } // Corrigindo manipulação do select
       >
+        <MenuItem value="">Selecione</MenuItem>
         {tipos.map((tipo) => (
           <MenuItem key={tipo} value={tipo}>
             {tipo}
@@ -136,7 +145,12 @@ function EstabelecimentoStep({ register, errors, onNext }: StepProps) {
   );
 }
 
-function ProprietarioStep({ register, errors, onBack }: StepProps) {
+function ProprietarioStep({ onBack }: StepProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<EstabelecimentoFormData>();
+
   return (
     <Box>
       <Typography variant="h6">Informações do Proprietário</Typography>
