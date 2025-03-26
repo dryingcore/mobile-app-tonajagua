@@ -53,6 +53,10 @@ const CategoryList: React.FC<CategoryListProps> = ({ onSelectCategory }) => {
         <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, mt: 2 }}>
           Categorias
         </Typography>
+
+        <Typography variant="body2">
+          Selecione uma categoria para ver os estabelecimentos
+        </Typography>
       </Box>
 
       <Box
