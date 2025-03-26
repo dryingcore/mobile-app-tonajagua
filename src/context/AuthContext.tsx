@@ -1,18 +1,12 @@
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-  User,
-} from "firebase/auth";
-import { createContext, useEffect, useState } from "react";
-import { auth } from "../config/firebase";
+import { User } from "firebase/auth";
+import { createContext } from "react";
 
-export const AuthContext = createContext<{
+const AuthContext = createContext<{
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 } | null>(null);
+
+export default AuthContext;
