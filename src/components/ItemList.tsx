@@ -36,7 +36,9 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
       setLoading(true);
       try {
         const url = categoria
-          ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(categoria)}`
+          ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(
+              categoria
+            )}`
           : "https://s01.decodesoftware.tech/estabelecimentos";
 
         const response = await fetch(url);
