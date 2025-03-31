@@ -16,7 +16,7 @@ interface ItemListProps {
 }
 
 const ItemList: React.FC<ItemListProps> = ({ categoria = "Todos" }) => {
-  const { items, loading, error, fetchData } = useFetchItems(categoria);
+  const { items, loading, error, refetch } = useFetchItems();
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -33,7 +33,7 @@ const ItemList: React.FC<ItemListProps> = ({ categoria = "Todos" }) => {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const top = e.currentTarget.scrollTop;
     if (top === 0 && !loading) {
-      fetchData(); // Atualiza os dados quando o usuário chega ao topo
+      refetch();
     }
   };
 
@@ -51,13 +51,15 @@ const ItemList: React.FC<ItemListProps> = ({ categoria = "Todos" }) => {
       </Typography>
     );
 
+  const categoryItems = items[categoria] || [];
+
   return (
     <Box display="flex" flexDirection="column" height="60vh" width="100%">
       <Container
         sx={{ flex: 1, overflowY: "auto", mt: 0.2, pb: 2, mb: 4 }}
         onScroll={handleScroll}
       >
-        {items.map((item) => (
+        {categoryItems.map((item) => (
           <Card
             key={item.id}
             sx={{
@@ -97,7 +99,7 @@ const ItemList: React.FC<ItemListProps> = ({ categoria = "Todos" }) => {
               {selectedItem.nome}
             </Typography>
             <Typography variant="body1" mt={1}>
-              Tipo: {selectedItem.tipo_estabelecimento.nome}
+              Tipo: {selectedItem.tipo_estabelecimento?.nome}
             </Typography>
             <Typography variant="body2" color="text.secondary" mt={1}>
               Endereço: {selectedItem.endereco}

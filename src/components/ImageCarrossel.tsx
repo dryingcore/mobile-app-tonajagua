@@ -40,7 +40,7 @@ export default function ImageCarrossel() {
         }}
       >
         <img
-          src={image.url}
+          src={image.url} 
           alt={`Imagem ${index}`}
           style={{
             width: "100%",
