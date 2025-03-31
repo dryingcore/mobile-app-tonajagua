@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Avatar } from "@mui/material";
-import LoginComponent from "../components/LoginComponent";
+import LoginComponent from "../components/forms/LoginComponent";
 
 export default function LoginPage() {
   return (

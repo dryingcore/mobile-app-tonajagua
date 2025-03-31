@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { CircularProgress, Box, Typography } from "@mui/material";
-import Header from "../components/Header";
-import ItemList from "../components/ItemList";
-import CategoryList from "../components/CategoryList";
-import ImageCarrossel from "../components/ImageCarrossel";
+import Header from "../components/ui/Header";
+import ItemList from "../components/lists/ItemList";
+import CategoryList from "../components/lists/CategoryList";
+import ImageCarrossel from "../components/lists/ImageCarrossel";
 
 export default function HomePage({ isMapLoaded }: { isMapLoaded: boolean }) {
   const [selectedCategory, setSelectedCategory] = useState<

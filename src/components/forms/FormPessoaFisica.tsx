@@ -3,8 +3,8 @@ import { TextField, Button, Alert } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import { pessoaFisicaSchema } from "../utils/validationSchema";
-import { useAuth } from "../hooks/useAuth"; // 🔹 Importa o hook de autenticação
+import { pessoaFisicaSchema } from "../../utils/validationSchema";
+import { useAuth } from "../../hooks/useAuth"; // 🔹 Importa o hook de autenticação
 
 interface PessoaFisicaFormData {
   nome: string;

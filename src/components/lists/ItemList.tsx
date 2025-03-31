@@ -7,9 +7,9 @@ import {
   Container,
   CircularProgress,
 } from "@mui/material";
-import CustomModal from "./Modal";
-import GoogleMapComponent from "./GoogleMaps";
-import useFetchItems from "../hooks/useFetchItems";
+import CustomModal from "../ui/Modal";
+import GoogleMapComponent from "../maps/GoogleMaps";
+import useFetchItems from "../../hooks/useFetchItems";
 
 interface ItemListProps {
   categoria?: string;

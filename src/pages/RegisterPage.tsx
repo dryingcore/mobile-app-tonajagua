@@ -6,8 +6,8 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
-import FormPessoaFisica from "../components/FormPessoaFisica";
-import { EstabelecimentoForm } from "../components/FormEstabelecimento";
+import FormPessoaFisica from "../components/forms/FormPessoaFisica";
+import { EstabelecimentoForm } from "../components/forms/FormEstabelecimento";
 import { useNavigate } from "react-router-dom";
 
 type CadastroTipo = "Pessoa Física" | "Estabelecimento";

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography, MenuItem } from "@mui/material";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { estabelecimentoSchema } from "../utils/validationSchema";
+import { estabelecimentoSchema } from "../../utils/validationSchema";
 
 interface EstabelecimentoFormData {
   nomeEstabelecimento: string;

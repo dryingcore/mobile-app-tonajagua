@@ -1,5 +1,5 @@
-import Header from "../components/Header";
-import ProfileComponent from "../components/ProfileComponent";
+import Header from "../components/ui/Header";
+import ProfileComponent from "../components/profile/ProfileComponent";
 
 export default function ProfilePage() {
   return (

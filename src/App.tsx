@@ -4,8 +4,8 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
-import Footer from "./components/Footer";
-import PrivateRoute from "./components/PrivateRoute";
+import Footer from "./components/ui/Footer";
+import PrivateRoute from "./components/auth/PrivateRoute";
 import ProfilePage from "./pages/ProfilePage";
 import colorSchema from "../color-schema.json";
 
