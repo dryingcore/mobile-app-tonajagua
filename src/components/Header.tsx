@@ -9,7 +9,7 @@ export default function Header() {
         height: 60,
         background: "#fff",
         color: "#000",
-        borderRadius: 0, // Remove as bordas arredondadas para ocupar 100%
+        borderRadius: 0,
         p: 1,
         top: 0,
         left: 0,

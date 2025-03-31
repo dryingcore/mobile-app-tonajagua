@@ -48,7 +48,7 @@ export default function LoginComponent() {
 
     try {
       await login(data.email, data.senha);
-      navigate("/home"); // 🔹 Redireciona após login bem-sucedido
+      navigate("/home");
     } catch (error: any) {
       setErrorMessage("Falha ao fazer login. Verifique suas credenciais.");
       console.error("Erro no login:", error.message);
