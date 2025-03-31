@@ -33,7 +33,7 @@ export default function ImageCarrossel() {
         encoding: Encoding.UTF8,
       });
 
-      return `file:///data/data/com.package/files/camacho_images/${fileName}`; // Caminho do arquivo salvo
+      return `file:///data/data/tech.decodesoftware.app/files/camacho_images/${fileName}`; // Caminho do arquivo salvo
     } catch (error) {
       console.error("Erro ao salvar a imagem:", error);
       return null;
