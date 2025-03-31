@@ -23,6 +23,28 @@ const imageURLs = [
   { url: trabalhoDeDesobstrucao },
 ];
 
+/**
+ * Componente que renderiza um carrossel de imagens.
+ *
+ * @remarks
+ * As imagens são importadas direto do diretório `images` e são
+ * renderizadas com um estilo de `object-fit: cover` para que sejam
+ * exibidas de forma responsiva.
+ *
+ * O carrossel tem as seguintes configurações:
+ * - `selectedItem`: o índice da imagem atual;
+ * - `onChange`: uma função que é chamada quando o usuário muda a
+ * imagem atual;
+ * - `showArrows`: false, para que as setas de navegação sejam ocultadas;
+ * - `showThumbs`: false, para que as miniaturas sejam ocultadas;
+ * - `infiniteLoop`: true, para que o carrossel seja exibido em loop;
+ * - `autoPlay`: true, para que o carrossel seja iniciado automaticamente;
+ * - `interval`: 5000, para que o carrossel seja atualizado a cada 5 segundos;
+ * - `stopOnHover`: true, para que o carrossel seja pausado quando o usuário
+ * passa o mouse sobre ele;
+ * - `showIndicators`: false, para que os indicadores sejam ocultados;
+ * - `showStatus`: false, para que o status do carrossel seja ocultado.
+ */
 export default function ImageCarrossel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -40,7 +62,7 @@ export default function ImageCarrossel() {
         }}
       >
         <img
-          src={image.url} 
+          src={image.url}
           alt={`Imagem ${index}`}
           style={{
             width: "100%",

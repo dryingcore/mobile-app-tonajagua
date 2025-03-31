@@ -14,9 +14,7 @@ interface Item {
 
 type ItemsByCategory = { [categoria: string]: Item[] };
 
-// URL base da API
 const BASE_URL = "https://s01.decodesoftware.tech/estabelecimentos";
-// Categorias a serem buscadas (excluímos "Todos", que será composta a partir das demais)
 const FETCH_CATEGORIES = [
   "Restaurante",
   "Mercado",
@@ -25,6 +23,13 @@ const FETCH_CATEGORIES = [
   "Hotel",
 ];
 
+/**
+ * Hook para buscar os estabelecimentos, divididos por categorias.
+ * Carrega os dados da API e armazena no estado local.
+ * Se o item da categoria n o existir no localStorage, busca na API e armazena.
+ * Retorna um objeto com o estado de carregamento, erro e os dados.
+ * @returns {object} - { items: ItemsByCategory, loading: boolean, error: string | null, refetch: () => void }
+ */
 const useFetchItems = () => {
   const [items, setItems] = useState<ItemsByCategory>({});
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,16 +53,13 @@ const useFetchItems = () => {
     try {
       const cachedData: ItemsByCategory = {};
 
-      // Recupera dados do cache (localStorage) para cada categoria
       for (const categoria of FETCH_CATEGORIES) {
         const armazenado = localStorage.getItem(`items_${categoria}`);
         cachedData[categoria] = armazenado ? JSON.parse(armazenado) : [];
       }
 
-      // Atualiza o estado com os dados em cache (otimização visual)
       setItems(cachedData);
 
-      // Para cada categoria sem dados no cache, realiza a busca na API
       await Promise.all(
         FETCH_CATEGORIES.map(async (categoria) => {
           if (cachedData[categoria].length === 0) {
@@ -68,13 +70,11 @@ const useFetchItems = () => {
         })
       );
 
-      // Concatena os itens de todas as categorias para compor "Todos"
       const todosItems = FETCH_CATEGORIES.reduce<Item[]>(
         (acumulador, categoria) => acumulador.concat(cachedData[categoria]),
         []
       );
 
-      // Atualiza os dados incluindo a categoria "Todos"
       const updatedData: ItemsByCategory = {
         ...cachedData,
         Todos: todosItems,
