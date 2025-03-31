@@ -4,13 +4,13 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 // Importação direta das imagens
-import desobstrucao from "/desobstrução.jpg";
-import lagoa from "/lagoa.jpeg";
-import energiaCamacho from "/energia-camacho.jpg";
-import praia from "/praia.jpg";
-import praia2 from "/praia2.jpg";
-import praia3 from "/praia3.jpg";
-import trabalhoDeDesobstrucao from "/trabalho-de-desobstrução.jpeg";
+import desobstrucao from "/images/desobstrução.jpg";
+import lagoa from "/images/lagoa.jpeg";
+import energiaCamacho from "/images/energia-camacho.jpg";
+import praia from "/images/praia.jpg";
+import praia2 from "/images/praia2.jpg";
+import praia3 from "/images/praia3.jpg";
+import trabalhoDeDesobstrucao from "/images/trabalho-de-desobstrução.jpeg";
 
 // Lista das imagens importadas
 const imageURLs = [

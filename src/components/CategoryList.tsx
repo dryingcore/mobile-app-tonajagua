@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import React from "react";
+import { Box, Typography } from "@mui/material";
 
 interface Category {
   id: number;
@@ -12,40 +12,14 @@ interface CategoryListProps {
 }
 
 const CategoryList: React.FC<CategoryListProps> = ({ onSelectCategory }) => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          "https://s01.decodesoftware.tech/estabelecimentos/tipos"
-        );
-
-        if (!response.ok) {
-          throw new Error(`Erro na requisição: ${response.status}`);
-        }
-
-        const json = await response.json();
-        if (!json.data || !Array.isArray(json.data)) {
-          throw new Error("A resposta da API não contém o array esperado.");
-        }
-
-        setCategories(json.data);
-      } catch (error: any) {
-        console.error("Erro ao buscar categorias:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  if (loading) return <CircularProgress />;
-  if (error) return <Typography color="error">Erro: {error}</Typography>;
+  const categories: Category[] = [
+    { id: 1, nome: "Todos", foto_url: "/icons/todos.png" },
+    { id: 2, nome: "Restaurante", foto_url: "/icons/restaurante.png" },
+    { id: 3, nome: "Mercado", foto_url: "/icons/mercado.png" },
+    { id: 4, nome: "Oficina", foto_url: "/icons/oficina.png" },
+    { id: 5, nome: "Serviços", foto_url: "/icons/servicos-digitais.png" },
+    { id: 6, nome: "Hotel", foto_url: "/icons/hotel.png" },
+  ];
 
   return (
     <Box sx={{ width: "100%" }}>
