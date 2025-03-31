@@ -3,15 +3,24 @@ import { Box } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-// Importando as imagens diretamente
+// Importação direta das imagens
+import desobstrucao from "../../public/desobstrução.jpg";
+import lagoa from "../../public/lagoa.jpeg";
+import energiaCamacho from "../../public/energia-camacho.jpg";
+import praia from "../../public/praia.jpg";
+import praia2 from "../../public/praia2.jpg";
+import praia3 from "../../public/praia3.jpg";
+import trabalhoDeDesobstrucao from "../../public/trabalho-de-desobstrução.jpeg";
+
+// Lista das imagens importadas
 const imageURLs = [
-  { url: require("../../public/desobstrução.jpg") },
-  { url: require("../../public/lagoa.jpeg") },
-  { url: require("../../public/energia-camacho.jpg") },
-  { url: require("../../public/praia.jpg") },
-  { url: require("../../public/praia2.jpg") },
-  { url: require("../../public/praia3.jpg") },
-  { url: require("../../public/trabalho-de-desobstrução.jpeg") },
+  { url: desobstrucao },
+  { url: lagoa },
+  { url: energiaCamacho },
+  { url: praia },
+  { url: praia2 },
+  { url: praia3 },
+  { url: trabalhoDeDesobstrucao },
 ];
 
 export default function ImageCarrossel() {
