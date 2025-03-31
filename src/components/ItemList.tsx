@@ -96,7 +96,7 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
 
   return (
     <Box display="flex" flexDirection="column" height="60vh" width="100%">
-      <Container sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2, mb: 2 }}>
+      <Container sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2, mb: 4 }}>
         {items.map((item) => (
           <Card
             key={item.id}
