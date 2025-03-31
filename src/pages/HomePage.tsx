@@ -1,13 +1,34 @@
 import { useState } from "react";
+import { CircularProgress, Box, Typography } from "@mui/material";
 import Header from "../components/Header";
 import ItemList from "../components/ItemList";
 import CategoryList from "../components/CategoryList";
 import ImageCarrossel from "../components/ImageCarrossel";
 
-export default function HomePage() {
+export default function HomePage({ isMapLoaded }: { isMapLoaded: boolean }) {
   const [selectedCategory, setSelectedCategory] = useState<
     string | undefined
   >();
+
+  if (!isMapLoaded) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          width: "100%",
+        }}
+      >
+        <CircularProgress color="primary" />
+        <Typography variant="h6" mt={2}>
+          Carregando mapa...
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <>
