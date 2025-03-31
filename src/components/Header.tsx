@@ -6,6 +6,7 @@ export default function Header() {
     <AppBar
       position="fixed"
       sx={{
+        height: 60,
         background: "#fff",
         color: "#000",
         borderRadius: 0, // Remove as bordas arredondadas para ocupar 100%

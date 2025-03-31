@@ -48,8 +48,8 @@ const CategoryList: React.FC<CategoryListProps> = ({ onSelectCategory }) => {
   if (error) return <Typography color="error">Erro: {error}</Typography>;
 
   return (
-    <Box sx={{ width: "100%", padding: "10px" }}>
-      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, mt: 2 }}>
+    <Box sx={{ width: "100%" }}>
+      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, mt: 1 }}>
         Categorias
       </Typography>
 

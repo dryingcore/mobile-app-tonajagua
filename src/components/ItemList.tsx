@@ -35,7 +35,8 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const cachedData = localStorage.getItem("items");
+      // Verificar se existe dados em cache para a categoria específica
+      const cachedData = localStorage.getItem(`items_${categoria}`);
 
       if (cachedData) {
         const parsedData = JSON.parse(cachedData);
@@ -53,7 +54,12 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
 
         const responseData = await response.json();
         setItems(responseData.data);
-        localStorage.setItem("items", JSON.stringify(responseData.data));
+
+        // Armazenar os dados no localStorage usando a categoria como chave
+        localStorage.setItem(
+          `items_${categoria}`,
+          JSON.stringify(responseData.data)
+        );
         setLoading(false);
       }
     } catch (err) {
@@ -100,7 +106,7 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
   return (
     <Box display="flex" flexDirection="column" height="60vh" width="100%">
       <Container
-        sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2, mb: 4 }}
+        sx={{ flex: 1, overflowY: "auto", mt: 0.2, pb: 2, mb: 4 }}
         onScroll={handleScroll} // Adicionando o evento de rolagem
       >
         {items.map((item) => (
