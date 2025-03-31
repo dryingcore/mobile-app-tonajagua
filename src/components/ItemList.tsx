@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -31,44 +31,40 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Verifique se os dados estão no localStorage
-        const cachedData = localStorage.getItem("items");
+  // Função que vai ser chamada para buscar os dados da API
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const cachedData = localStorage.getItem("items");
 
-        if (cachedData) {
-          // Se os dados estão no cache, use-os
-          const parsedData = JSON.parse(cachedData);
-          setItems(parsedData);
-          setLoading(false);
-        } else {
-          // Caso contrário, faça a requisição à API
-          const url = categoria
-            ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(
-                categoria
-              )}`
-            : "https://s01.decodesoftware.tech/estabelecimentos";
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        setItems(parsedData);
+        setLoading(false);
+      } else {
+        const url = categoria
+          ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(
+              categoria
+            )}`
+          : "https://s01.decodesoftware.tech/estabelecimentos";
 
-          const response = await fetch(url);
-          if (!response.ok) throw new Error("Failed to fetch data");
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch data");
 
-          const responseData = await response.json();
-          setItems(responseData.data);
-
-          // Salve os dados no localStorage
-          localStorage.setItem("items", JSON.stringify(responseData.data));
-          setLoading(false);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Erro desconhecido");
+        const responseData = await response.json();
+        setItems(responseData.data);
+        localStorage.setItem("items", JSON.stringify(responseData.data));
         setLoading(false);
       }
-    };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido");
+      setLoading(false);
+    }
+  }, [categoria]);
 
-    fetchData();
-  }, [categoria]); // Atualiza os dados quando a categoria mudar
+  useEffect(() => {
+    fetchData(); // Chama a função quando o componente é montado
+  }, [fetchData]);
 
   const handleOpen = (item: Item) => {
     setSelectedItem(item);
@@ -78,6 +74,13 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
   const handleClose = () => {
     setOpen(false);
     setSelectedItem(null);
+  };
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const top = e.currentTarget.scrollTop;
+    if (top === 0 && !loading) {
+      fetchData(); // Atualiza os dados quando o usuário chega ao topo
+    }
   };
 
   if (loading)
@@ -96,7 +99,10 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
 
   return (
     <Box display="flex" flexDirection="column" height="60vh" width="100%">
-      <Container sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2, mb: 4 }}>
+      <Container
+        sx={{ flex: 1, overflowY: "auto", mt: 2, pb: 2, mb: 4 }}
+        onScroll={handleScroll} // Adicionando o evento de rolagem
+      >
         {items.map((item) => (
           <Card
             key={item.id}
