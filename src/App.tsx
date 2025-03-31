@@ -14,8 +14,6 @@ const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 function App() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
-    // Pode adicionar libs específicas se quiser:
-    // libraries: ['places'],
   });
 
   return (
