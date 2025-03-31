@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -15,12 +15,34 @@ const images = [
 
 export default function ImageCarrossel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [storedImages, setStoredImages] = useState<string[]>([]);
 
-  const imagesToShow: ReactElement[] = images.map((img) => {
-    console.log(`${imageBaseUrl}${img}`);
+  useEffect(() => {
+    // Verificar se as imagens estão no localStorage
+    const storedData = localStorage.getItem("images");
+
+    if (storedData) {
+      // Se as imagens estão no localStorage, use-as
+      setStoredImages(JSON.parse(storedData));
+    } else {
+      // Caso contrário, faça o processo de armazenar as imagens
+      const imageUrls = images.map((img) => `${imageBaseUrl}${img}`);
+      setStoredImages(imageUrls);
+
+      // Salve no localStorage
+      localStorage.setItem("images", JSON.stringify(imageUrls));
+    }
+  }, []);
+
+  const imagesToShow: ReactElement[] = storedImages.map((imgUrl, index) => {
+    const altText = images[index]
+      .replace(/-/g, " ")
+      .replace(".jpg", "")
+      .toUpperCase();
+
     return (
       <Box
-        key={img}
+        key={imgUrl}
         sx={{
           width: "100%",
           height: "100px",
@@ -31,8 +53,8 @@ export default function ImageCarrossel() {
         }}
       >
         <img
-          src={`${imageBaseUrl}${img}`}
-          alt={img}
+          src={imgUrl}
+          alt={altText}
           style={{
             width: "100%",
             height: "100%",
