@@ -3,24 +3,24 @@ import { Box } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-const imageBaseUrl = "https://s01.decodesoftware.tech/uploads/camacho/";
-const images = [
-  "desobstrucao.jpg",
-  "energia-camacho.jpg",
-  "praia.jpg",
-  "praia2.jpg",
-  "praia3.jpg",
-  "trabalho-de-desobstrucao.jpg",
+// Importando as imagens diretamente
+const imageURLs = [
+  { url: require("../../public/desobstrução.jpg") },
+  { url: require("../../public/lagoa.jpeg") },
+  { url: require("../../public/energia-camacho.jpg") },
+  { url: require("../../public/praia.jpg") },
+  { url: require("../../public/praia2.jpg") },
+  { url: require("../../public/praia3.jpg") },
+  { url: require("../../public/trabalho-de-desobstrução.jpeg") },
 ];
 
 export default function ImageCarrossel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const imagesToShow: ReactElement[] = images.map((img) => {
-    console.log(`${imageBaseUrl}${img}`);
+  const imagesToShow: ReactElement[] = imageURLs.map((image, index) => {
     return (
       <Box
-        key={img}
+        key={index}
         sx={{
           width: "100%",
           height: "100px",
@@ -31,8 +31,8 @@ export default function ImageCarrossel() {
         }}
       >
         <img
-          src={`${imageBaseUrl}${img}`}
-          alt={img}
+          src={image.url}
+          alt={`Imagem ${index}`}
           style={{
             width: "100%",
             height: "100%",
