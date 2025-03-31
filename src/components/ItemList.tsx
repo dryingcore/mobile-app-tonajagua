@@ -35,20 +35,34 @@ const ItemList: React.FC<ItemListProps> = ({ categoria }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const url = categoria
-          ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(
-              categoria
-            )}`
-          : "https://s01.decodesoftware.tech/estabelecimentos";
+        // Verifique se os dados estão no localStorage
+        const cachedData = localStorage.getItem("items");
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Failed to fetch data");
+        if (cachedData) {
+          // Se os dados estão no cache, use-os
+          const parsedData = JSON.parse(cachedData);
+          setItems(parsedData);
+          setLoading(false);
+        } else {
+          // Caso contrário, faça a requisição à API
+          const url = categoria
+            ? `https://s01.decodesoftware.tech/estabelecimentos?categoria=${encodeURIComponent(
+                categoria
+              )}`
+            : "https://s01.decodesoftware.tech/estabelecimentos";
 
-        const responseData = await response.json();
-        setItems(responseData.data);
+          const response = await fetch(url);
+          if (!response.ok) throw new Error("Failed to fetch data");
+
+          const responseData = await response.json();
+          setItems(responseData.data);
+
+          // Salve os dados no localStorage
+          localStorage.setItem("items", JSON.stringify(responseData.data));
+          setLoading(false);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erro desconhecido");
-      } finally {
         setLoading(false);
       }
     };
